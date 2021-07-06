@@ -8,12 +8,15 @@ import retrofit2.http.Query
 
 interface ApiService {
     @GET("search")
-    suspend fun getSearchResponse(@Query("q") query: String): SearchResponse
+    suspend fun getSearchResponse(
+        @Query("q") query: String,
+        @Query("offset") page: Int
+    ): SearchResponse
 
     companion object {
         operator fun invoke(): ApiService {
             return Retrofit.Builder()
-                .baseUrl("https://api.mercadolibre.com/sits/MLA/")
+                .baseUrl("https://api.mercadolibre.com/sites/MLA/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
                 .create(ApiService::class.java)

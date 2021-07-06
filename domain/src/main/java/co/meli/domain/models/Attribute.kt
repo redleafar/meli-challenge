@@ -1,6 +1,7 @@
 package co.meli.domain.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Attribute(
     @SerializedName("name") val name: String?,
@@ -11,4 +12,4 @@ data class Attribute(
     @SerializedName("attribute_group_name") val attributeGroupName: String?,
     @SerializedName("source") val source: Long?,
     @SerializedName("id") val id: String?
-)
+) : Serializable

@@ -7,4 +7,7 @@
     <color name="teal_700">#FF018786</color>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="meli_yellow">#FFF159</color>
+    <color name="meli_blue">#3483FA</color>
+    <color name="meli_dark_blue">#2D3277</color>
 </resources>

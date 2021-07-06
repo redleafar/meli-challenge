@@ -1,29 +1,23 @@
 package co.meli.challenge.viewmodels
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import co.meli.data.datasources.impl.SearchDataSourceImpl
-import co.meli.data.repository.impl.SearchRepositoryImpl
-import co.meli.data.services.api.ApiService
-import co.meli.domain.models.ResultWrapper
-import co.meli.domain.models.SearchResponse
-import co.meli.domain.usecases.impl.SearchUseCaseImpl
-import kotlinx.coroutines.launch
+import androidx.paging.Pager
+import androidx.paging.PagingConfig
+import androidx.paging.PagingData
+import androidx.paging.cachedIn
+import co.meli.challenge.utils.ProductPagingSource
+import co.meli.domain.models.Product
+import co.meli.domain.usecases.SearchUseCase
+import kotlinx.coroutines.flow.Flow
 
-class ResultsViewModel : ViewModel() {
-    fun search(query: String) {
-        val dataSource = SearchDataSourceImpl(ApiService())
-        val repository = SearchRepositoryImpl(dataSource)
-        val searchUseCase = SearchUseCaseImpl(repository)
+class ResultsViewModel(
+    private val searchUseCase: SearchUseCase
+) : ViewModel() {
 
-        viewModelScope.launch {
-            val result = searchUseCase<SearchResponse>(query)
-            when {
-                result is ResultWrapper.Success -> Log.d("meliresult", result.value.toString())
-                result is ResultWrapper.GenericError -> Log.d("melierror", result.message.toString())
-                result is ResultWrapper.NetworkError -> Log.d("melinetworkerror", "Revisa tu conexión")
-            }
-        }
+    fun search(query: String): Flow<PagingData<Product>> {
+        return Pager(PagingConfig(pageSize = 10)) {
+            ProductPagingSource(searchUseCase, query)
+        }.flow.cachedIn(viewModelScope)
     }
 }

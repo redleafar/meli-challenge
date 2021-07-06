@@ -1,6 +1,7 @@
 package co.meli.domain.models
 
 import com.google.gson.annotations.SerializedName
+import java.io.Serializable
 
 data class Product(
     @SerializedName("id") val id: String?,
@@ -27,5 +28,4 @@ data class Product(
     @SerializedName("category_id") val categoryId: String?,
     @SerializedName("tags") val tags: List<String>?,
     @SerializedName("catalog_listing") val catalogListing: Boolean?
-
-)
+) : Serializable
